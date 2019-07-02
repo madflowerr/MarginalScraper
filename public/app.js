@@ -1,0 +1,4 @@
+
+(function(){
+    axios.get("/scrape")
+} ());

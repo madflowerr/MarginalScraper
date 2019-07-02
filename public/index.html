@@ -9,10 +9,26 @@
 
   <!-- js -->
   <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 Hello World
-  <script src="app.js"></script>
-  <script></script>
+<div id='display'>
+    <p  v-for="element in recommedations"> {{element.title}}</p>
+</div>
+ <script src="app.js"></script>
+ <script>
+     axios.get("/Bookrecs").then(
+         function(Bookrecs) {
+             return Bookrecs
+         }
+     )
+     var display = new Vue({
+        el: "#display",
+        data: {
+            recommendations: Bookrecs,
+        }
+     })
+ </script>
 </body>
 </html>

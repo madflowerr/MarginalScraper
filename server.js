@@ -4,17 +4,18 @@ let axios = require("axios");
 let cheerio = require("cheerio");
 let PORT = 3019 || process.env.PORT;
 
-let db = require("./models");
-
-
 let app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/marginalScraper";
 
-mongoose.connect("mongodb://localhost/marginalScraper", { useNewUrlParser: true }).then(console.log('connected'));
+mongoose.connect(MONGODB_URI);
+
+let db = mongoose.connection;
+
 
 
 app.get("/scrape", function(req, res) {
@@ -28,9 +29,9 @@ app.get("/scrape", function(req, res) {
         result.title = C$(this).text();
         result.link = C$(this).attr('href');
 
-        db.Bookrecss.create(result)
-        .then(function(dbBookrecss) {
-          console.log(dbBookrecss);
+        db.Bookrecs.save(result)
+        .then(function(dbBookrecs) {
+          console.log(dbBookrecs);
         })
         .catch(function(err) {
           // If an error occurred, log it
@@ -44,7 +45,7 @@ app.get("/scrape", function(req, res) {
 
 app.get("/Bookrecs", function(req, res) {
   db.Bookrecs.find({})
-    .then(function(dbBookrecs) {
+    .dthen(function(dbBookrecs) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbBookrecs);
     })
